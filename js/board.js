@@ -1,4 +1,23 @@
-var firstType = 0;
+var firstType = 1;       // 1--black  2-white
+var rowNum = 18;
+var chess = new Array();
+var chessRegion = new Array();   // 每个
+var region = new Array();        // 分片，连在一起的为一片; 可能两，三，四片合并在一起
+
+var $$ = function(id) {
+	return document.getElementById(id);
+}
+
+initChess();
+
+function initChess() {
+	for(var i = 0; i <= rowNum; i++) {
+		chess[i] = new Array();
+		for(var j = 0; j <= rowNum; j++) {	
+			chess[i][j] = 0;
+		}
+	}
+}
 
 /* chess board */
 function drawBoard(rowLen, rowNum) {
@@ -55,7 +74,7 @@ function drawBoard(rowLen, rowNum) {
 function drawChess(i, j, radis, len, type) {
 	var gradient = "from(#FFF),to(#AAA)";
 	var color = "FFF";
-	if(type == 0) {
+	if(type == 1) {
 		//black
 		color = "000";
 		gradient = "from(#DDD),to(#FFF)";		
@@ -78,8 +97,24 @@ function drawChess(i, j, radis, len, type) {
 }
 
 function doClick(i, j, crossLen, rowLen) {
-    drawChess(i,j,crossLen/2, rowLen, firstType);
-    firstType = (firstType == 0 ? 1 : 0);
+	if(chess[i][j] == 0) {
+		
+		
+		
+	    drawChess(i,j,crossLen/2, rowLen, firstType);
+	    chess[i][j] = firstType;
+	    
+	    raisin(i, j, firstType);           // 判断是否吃子
+	    
+	    firstType = (firstType == 1 ? 2 : 1);
+
+	}
+}
+
+function raisin(i, j, firstType) {
+	
+	
+	
 }
 
 
