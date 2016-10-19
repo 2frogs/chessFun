@@ -1,5 +1,5 @@
 var firstType = 1;       // 1--black  2-white
-var rowNum = 18;
+var rowNum = 14;
 var chess = new Array();
 var chessRegion = new Array();   // 每个
 var region = new Array();        // 分片，连在一起的为一片; 可能两，三，四片合并在一起
@@ -99,17 +99,30 @@ function drawChess(i, j, radis, len, type) {
 function doClick(i, j, crossLen, rowLen) {
 	if(chess[i][j] == 0) {
 		
-		
-		
 	    drawChess(i,j,crossLen/2, rowLen, firstType);
 	    chess[i][j] = firstType;
+	    t_board[i][j] = firstType;
 	    
-	    raisin(i, j, firstType);           // 判断是否吃子
+	    if(isWin(i, j, t_board, firstType)) {
+	    	alert("you win!");
+	    }
 	    
-	    firstType = (firstType == 1 ? 2 : 1);
-
+	    firstType = (firstType == 1 ? 2 : 1);    
+	    var bp = getBestPoint(MAX_DEPTH, firstType);   // computer
+alert(bp[0] + " " + bp[1] + " " + bp[2]);	    
+	    drawChess(bp[0], bp[1], crossLen/2, rowLen, firstType);
+	    chess[bp[0]][bp[1]] = firstType;
+	    t_board[ibp[0]][bp[1]] = firstType;
+	    
+	    if(isWin(bp[0], bp[1], t_board, firstType)) {
+	    	alert("computer win!");
+	    }
+	    
+		firstType = (firstType == 1 ? 2 : 1);
 	}
 }
+
+
 
 function raisin(i, j, firstType) {
 	
