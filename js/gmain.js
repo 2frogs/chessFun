@@ -13,13 +13,13 @@ initBoard();
 
 var count = 0;
 
-//test();
+//test(); 
 function test() {
 	board[7][7] = 1;
 //	board[8][8] = 2;
 	t_board[7][7] = 1;
 //	t_board[8][8] = 2;
-	CUR_TYPE = 2''
+	CUR_TYPE = 2;
 	var bp = getBestPoint(MAX_DEPTH, CUR_TYPE);
 	alert(bp[0] + " " + bp[1] + " " + bp[2]);
 }
@@ -126,8 +126,8 @@ function getBestScore(t_board, type) {
 						
 						for(var t  = MAX_POINT -1; t > k; t--) {
 							bp[t][2] = bp[t-1][2];
-							bp[t][0] = bp[t-1][2];
-							bp[t][1] = bp[t-1][2];
+							bp[t][0] = bp[t-1][0];
+							bp[t][1] = bp[t-1][1];
 						}
 						
 						bp[k][2] = score;
@@ -148,12 +148,13 @@ function getBestScore(t_board, type) {
  * */
 function calScore(i, j, t_board, type) {
 	
+	var tmp = t_board[i][j];
 	t_board[i][j] = type;
 	
 	var score = 0;
 	// 横向
 	var line = "";
-	for(var t = 0; t <= i; t++) {
+	for(var t = i; t >= 0; t--) {
 		if(t_board[t][j] == 0 || t_board[t][j] == type) {
 			line += t_board[t][j];
 		} else {
@@ -172,7 +173,7 @@ function calScore(i, j, t_board, type) {
 	line = "";
 
 	// 纵向
-	for(var t = 0; t <= j; t++) {
+	for(var t = j; t >= 0; t--) {
 		if(t_board[i][t] == 0 || t_board[i][t] == type) {
 			line += t_board[i][t];
 		} else {
@@ -190,9 +191,9 @@ function calScore(i, j, t_board, type) {
 	line = "";
 	
 	// left top
-	for(var ii = 0, jj = 0; ii <= i && jj <= j; ii++, jj++ ) {
+	for(var ii = i, jj = j; ii >=0  && jj >=0 ; ii--, jj-- ) {
 		if(t_board[ii][jj] == 0 || t_board[ii][jj] == type) {
-			line += t_board[ii][jj];
+			line = t_board[ii][jj] + line;
 		} else {
 			break;
 		}			
@@ -208,9 +209,9 @@ function calScore(i, j, t_board, type) {
 	line = "";
 	
 	// right top
-	for(var ii = 0, jj = N-1; ii <= i && jj >= j; ii++, jj-- ) {
+	for(var ii = i, jj = j; ii >= 0 && jj <=N ; ii--, jj++ ) {
 		if(t_board[ii][jj] == 0 || t_board[ii][jj] == type) {
-			line += t_board[ii][jj];
+			line = line + t_board[ii][jj];
 		} else {
 			break;
 		}			
@@ -227,16 +228,18 @@ function calScore(i, j, t_board, type) {
 	
 	score += valScore(line);
 	
-	t_board[i][j] = 0;
+	t_board[i][j] = tmp;
 	
 	return score;
 }
 
 /* calculate score */
 function valScore(line) {
+
 	line = line.replace(/2/g, "1");
+
 	if(line.indexOf("11111") > 0) {
-		return WIN_SCORE;
+		return 50000;
 	}
 	if(line.indexOf("011110") > 0) {
 		return 4320;
@@ -257,7 +260,9 @@ function valScore(line) {
 }	
 
 function isWin(i, j, t_board, type) {
-	if(calScore(i, j, t_board, type) >= 50000) {
+	var score = calScore(i, j, t_board, type); 
+//	alert(score);
+	if(score >= 50000) {
 		return true;
 	} else {
 		return false;
