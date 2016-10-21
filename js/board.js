@@ -104,6 +104,7 @@ function doClick(i, j, crossLen, rowLen) {
 	    
 	    if(isWin(i, j, board, firstType)) {
 	    	alert("you win!");
+	    	return;
 	    }
 	    
 	    firstType = (firstType == 1 ? 2 : 1);    

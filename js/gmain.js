@@ -156,7 +156,7 @@ function calScore(i, j, t_board, type) {
 	var line = "";
 	for(var t = i; t >= 0; t--) {
 		if(t_board[t][j] == 0 || t_board[t][j] == type) {
-			line += t_board[t][j];
+			line = t_board[t][j] + line;
 		} else {
 			break;
 		}
@@ -175,7 +175,7 @@ function calScore(i, j, t_board, type) {
 	// 纵向
 	for(var t = j; t >= 0; t--) {
 		if(t_board[i][t] == 0 || t_board[i][t] == type) {
-			line += t_board[i][t];
+			line = t_board[i][t] + line;
 		} else {
 			break;
 		}
@@ -209,9 +209,9 @@ function calScore(i, j, t_board, type) {
 	line = "";
 	
 	// right top
-	for(var ii = i, jj = j; ii >= 0 && jj <=N ; ii--, jj++ ) {
+	for(var ii = i, jj = j; ii >= 0 && jj < N ; ii--, jj++ ) {
 		if(t_board[ii][jj] == 0 || t_board[ii][jj] == type) {
-			line = line + t_board[ii][jj];
+			line = t_board[ii][jj] + line;
 		} else {
 			break;
 		}			
@@ -237,23 +237,26 @@ function calScore(i, j, t_board, type) {
 function valScore(line) {
 
 	line = line.replace(/2/g, "1");
-
-	if(line.indexOf("11111") > 0) {
+//console.log(line);
+	if(line.indexOf("11111") >= 0) {
 		return 50000;
 	}
-	if(line.indexOf("011110") > 0) {
+	if(line.indexOf("011110") >= 0) {
 		return 4320;
 	}
-	if(line.indexOf("011100") > 0 || line.indexOf("001110") > 0 || line.indexOf("011010") > 0 
-			|| line.indexOf("010110") > 0 || line.indexOf("11110") > 0 || line.indexOf("01111") > 0 
-			|| line.indexOf("11011") > 0 || line.indexOf("10111") > 0 || line.indexOf("11101") > 0) {
+	if(line.indexOf("11110") >= 0 || line.indexOf("01111") >= 0) {
+		return 1800;
+	}	
+	if(line.indexOf("011100") >= 0 || line.indexOf("001110") >= 0 || line.indexOf("011010") >= 0 
+			|| line.indexOf("010110") >= 0 || line.indexOf("11110") >= 0 || line.indexOf("01111") >= 0 
+			|| line.indexOf("11011") >= 0 || line.indexOf("10111") >= 0 || line.indexOf("11101") >= 0) {
 		return 720;
 	}
 	
-	if(line.indexOf("001100") > 0 || line.indexOf("001010") > 0 || line.indexOf("010100") > 0) {
+	if(line.indexOf("001100") >= 0 || line.indexOf("001010") >= 0 || line.indexOf("010100") >= 0) {
 		return 120;
 	}
-	if(line.indexOf("000100") > 0 || line.indexOf("001000") > 0) {
+	if(line.indexOf("000100") >= 0 || line.indexOf("001000") >= 0) {
 		return 20;
 	}
 	return 0;
@@ -261,9 +264,9 @@ function valScore(line) {
 
 function isWin(i, j, t_board, type) {
 	var score = calScore(i, j, t_board, type); 
-//	alert(score);
+//	alert(type + " " + score);
 	if(score >= 50000) {
-		return true;
+		return true; 
 	} else {
 		return false;
 	}
