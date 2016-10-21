@@ -1,8 +1,6 @@
 var firstType = 1;       // 1--black  2-white
 var rowNum = 14;
 var chess = new Array();
-var chessRegion = new Array();   // 每个
-var region = new Array();        // 分片，连在一起的为一片; 可能两，三，四片合并在一起
 
 var $$ = function(id) {
 	return document.getElementById(id);
@@ -97,7 +95,8 @@ function drawChess(i, j, radis, len, type) {
 }
 
 function doClick(i, j, crossLen, rowLen) {
-	if(chess[i][j] == 0) {
+
+	if(board[i][j] == 0) {
 		
 	    drawChess(i,j,crossLen/2, rowLen, firstType);
 	    chess[i][j] = firstType;
