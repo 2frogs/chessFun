@@ -101,20 +101,22 @@ function doClick(i, j, crossLen, rowLen) {
 		
 	    drawChess(i,j,crossLen/2, rowLen, firstType);
 	    chess[i][j] = firstType;
-	    t_board[i][j] = firstType;
+//	    t_board[i][j] = firstType;
 	    
-	    if(isWin(i, j, t_board, firstType)) {
+	    if(isWin(i, j, firstType)) {
 	    	alert("you win!");
 	    }
-	    
+var start = new Date().getTime();	    
 	    firstType = (firstType == 1 ? 2 : 1);    
-	    var bp = getBestPoint(MAX_DEPTH, firstType);   // computer
-alert(bp[0] + " " + bp[1] + " " + bp[2]);	    
+	    var bp = getBestPoint(i, j, firstType);   // computer
+var finish = new Date().getTime();
+console.log(finish - start);
+//alert(bp[0] + " " + bp[1] + " " + bp[2]);	    
 	    drawChess(bp[0], bp[1], crossLen/2, rowLen, firstType);
 	    chess[bp[0]][bp[1]] = firstType;
-	    t_board[ibp[0]][bp[1]] = firstType;
+//	    t_board[ibp[0]][bp[1]] = firstType;
 	    
-	    if(isWin(bp[0], bp[1], t_board, firstType)) {
+	    if(isWin(bp[0], bp[1], firstType)) {
 	    	alert("computer win!");
 	    }
 	    
