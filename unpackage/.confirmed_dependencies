@@ -1,7 +1,8 @@
 {
 	"index.html": {
 		"resources": [
-			"js/board.js"
+			"js/board.js",
+			"js/gmain3.js"
 		]
 	}
 }

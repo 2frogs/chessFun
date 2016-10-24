@@ -11,9 +11,16 @@ var WScoreTable = new Array(7, 15, 400, 1800,  100000, 35, 800, 15000, 800000,  
 var BLANK = 0;
 var BLACK = 1;
 var WHITE = 2;
+var MAX_DEPTH = 3; 
+var CUR_TYPE = BLACK;
 
+var TMP_COUNT = 0;
 
 function getBestPoint(i, j , type) {
+	
+if(isWin(i, j , type)) {
+	return new Array(-1, -1, 0)
+}
 	var bp = new Array(0, 0, 0); //i, j, score
 	
 	// left top， area 5 box
@@ -36,6 +43,72 @@ function getBestPoint(i, j , type) {
 	}
 	
 	return bp;
+}
+
+function getPoints(i, j , type) {
+if(isWin(i, j , type)) {
+	var rtn = new Array();
+	rtn[0] = new Array(-1, -1, 0);
+	return rtn;
+}	
+	var bp = new Array();
+	
+	var k = 0;
+	
+	// left top， area 5 box
+	var ti = (i-5) < 0 ? 0 : i-5;   // top left i
+	var tj = (j-5) < 0 ? 0 : j-5;   // top left j
+	var bi = (i + 5) >= N ? N : i+5;
+	var bj = (j + 5) >= N ? N : j+5
+	
+	for(var m = ti; m < bi; m++) {
+		for(n = tj; n < bj; n++) {
+			if(chess[m][n] == BLANK) {
+				var score = calScore(m, n, type);
+				bp[k] = new Array(m, n, score);
+				k++;
+			}
+		}			
+	}
+	
+	return bp;	
+	
+}
+
+function search(i, j, type, depth) {
+TMP_COUNT++;
+	if(depth == 1)  {
+		var bp = getBestPoint(i, j, type);
+		return bp;
+	}
+	
+	var bpp = getPoints(i, j, type);
+	type = (type == BLACK ? WHITE : BLACK);
+	
+	var point = new Array(-1, -1, -1);
+	// if type == CUR_TYPE, get max, or get min
+	for(var k = 0; k < bpp.length; k++) {
+		chess[bpp[k][0]][bpp[k][1]] = type;
+
+		var tmpPoint = search(bpp[k][0], bpp[k][1], type == BLACK ? WHITE : BLACK, depth-1);
+		if(point[0] == -1) {
+			point = tmpPoint;
+		} else {
+			if(type ==CUR_TYPE) {  
+				// get max
+				if(point[2] > tmpPoint[2]) {
+					point = tmpPoint;
+				}
+			} else {
+				if(point[2] < tmpPoint[2]) {
+					point = tmpPoint;
+				}
+			}			
+		}
+
+		chess[bpp[k][0]][bpp[k][1]] = BLANK;
+	}
+	return point;
 }
 
 
@@ -71,7 +144,7 @@ function calScore(i, j, type) {
 				// all white
 				score += scoreTable[tuple[2] + 4];
 			}
-console.log(i + " " + j + " blank: " + tuple[0] + ", black " + tuple[1] + ", white " + tuple[2] + "total score:" + score);	
+//console.log(i + " " + j + " blank: " + tuple[0] + ", black " + tuple[1] + ", white " + tuple[2] + "total score:" + score);	
 
 			// remove head point
 			tuple[chess[headi][j]]--;

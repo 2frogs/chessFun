@@ -106,10 +106,12 @@ function doClick(i, j, crossLen, rowLen) {
 	    	return;
 	    }
 var start = new Date().getTime();	    
-	    firstType = (firstType == 1 ? 2 : 1);    
-	    var bp = getBestPoint(i, j, firstType);   // computer
+	    firstType = (firstType == 1 ? 2 : 1);  
+	    CUR_TYPE = firstType;
+	    var bp = search(i, j, firstType, MAX_DEPTH);   // computer
 var finish = new Date().getTime();
-//console.log(finish - start + " " + bp[2]);
+console.log(finish - start + " " + TMP_COUNT);
+TMP_COUNT = 0;
 //alert(bp[0] + " " + bp[1] + " " + bp[2]);	    
 	    drawChess(bp[0], bp[1], crossLen/2, rowLen, firstType);
 	    chess[bp[0]][bp[1]] = firstType;
@@ -137,6 +139,7 @@ function doClick2(i, j, crossLen, rowLen) {
 	    }
 var start = new Date().getTime();	    
 	    firstType = (firstType == 1 ? 2 : 1);    
+
 	    var bp = getBestPoint(i, j, firstType);   // computer
 var finish = new Date().getTime();
 //console.log(finish - start + " " + bp[2]);
