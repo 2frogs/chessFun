@@ -83,7 +83,7 @@ TMP_COUNT++;
 	}
 	
 	var bpp = getPoints(i, j, type);
-	type = (type == BLACK ? WHITE : BLACK);
+//	type = (type == BLACK ? WHITE : BLACK);
 	
 	var point = new Array(-1, -1, -1);
 	// if type == CUR_TYPE, get max, or get min
@@ -95,7 +95,7 @@ TMP_COUNT++;
 			point = tmpPoint;
 		} else {
 			if(type ==CUR_TYPE) {  
-				// get max
+				// get min
 				if(point[2] > tmpPoint[2]) {
 					point = tmpPoint;
 				}

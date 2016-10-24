@@ -11,7 +11,7 @@ var WScoreTable = new Array(7, 15, 400, 1800,  100000, 35, 800, 15000, 800000,  
 var BLANK = 0;
 var BLACK = 1;
 var WHITE = 2;
-var MAX_DEPTH = 3; 
+var MAX_DEPTH = 4; 
 var CUR_TYPE = BLACK;
 
 var TMP_COUNT = 0;
@@ -22,7 +22,7 @@ if(isWin(i, j , type)) {
 	if(type != CUR_TYPE) {
 		return new Array(-1, -1, 0)		
 	} else {
-		return new Array(-1, -1, 1000000)
+		return new Array(-1, -1, 10000000)
 	}
 	
 }
@@ -56,12 +56,13 @@ if(isWin(i, j , type)) {
 	if(type != CUR_TYPE) {
 		rtn[0] = new Array(-1, -1, 0);
 	} else {
-		rtn[0] = new Array(-1, -1, 1000000);
+		rtn[0] = new Array(-1, -1, 10000000);
 	}
 }	
 	var bp = new Array();
 	
 	var k = 0;
+	
 	
 	// left top， area 5 box
 	var ti = (i-5) < 0 ? 0 : i-5;   // top left i
@@ -83,7 +84,7 @@ if(isWin(i, j , type)) {
 	
 }
 
-function search(i, j, type, depth) {
+function search(i, j, type, depth, parentScore) {
 TMP_COUNT++;
 	if(depth == 1)  {
 		var bp = getBestPoint(i, j, type);
@@ -91,26 +92,34 @@ TMP_COUNT++;
 	}
 	
 	var bpp = getPoints(i, j, type);
-	type = (type == BLACK ? WHITE : BLACK);
+//	type = (type == BLACK ? WHITE : BLACK);
 	
 	var point = new Array(-1, -1, -1);
-	// if type == CUR_TYPE, get max, or get min
+	// if type == CUR_TYPE, get min, or get max
 	for(var k = 0; k < bpp.length; k++) {
 		chess[bpp[k][0]][bpp[k][1]] = type;
 
-		var tmpPoint = search(bpp[k][0], bpp[k][1], type == BLACK ? WHITE : BLACK, depth-1);
+		var tmpPoint = search(bpp[k][0], bpp[k][1], type == BLACK ? WHITE : BLACK, depth-1, point[2]);
 		if(point[0] == -1) {
 			point = tmpPoint;
 		} else {
-			if(type ==CUR_TYPE) {  
-				// get max
+			if(type == CUR_TYPE) {  
+				// get min
 				if(point[2] > tmpPoint[2]) {
 					point = tmpPoint;
+				}
+				if(parentScore != -1 && point[2] <= parentScore) {
+					chess[bpp[k][0]][bpp[k][1]] = BLANK;
+					break;
 				}
 			} else {
 				if(point[2] < tmpPoint[2]) {
 					point = tmpPoint;
 				}
+				if(parentScore != -1 && point[2] >= parentScore) {
+					chess[bpp[k][0]][bpp[k][1]] = BLANK;
+					break;
+				}				
 			}			
 		}
 

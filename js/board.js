@@ -108,8 +108,9 @@ function doClick(i, j, crossLen, rowLen) {
 var start = new Date().getTime();	    
 	    firstType = (firstType == 1 ? 2 : 1);  
 	    CUR_TYPE = firstType;
-	    var bp = search(i, j, firstType, MAX_DEPTH);   // computer
+	    var bp = search(i, j, firstType, MAX_DEPTH, -1);   // computer
 var finish = new Date().getTime();
+alert(finish - start + " " + TMP_COUNT);
 console.log(finish - start + " " + TMP_COUNT);
 TMP_COUNT = 0;
 //alert(bp[0] + " " + bp[1] + " " + bp[2]);	    
