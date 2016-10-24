@@ -15,85 +15,28 @@ var WHITE = 2;
 
 function getBestPoint(i, j , type) {
 	var bp = new Array(0, 0, 0); //i, j, score
-	// eight directions
-	for(var k = 1; k <= 5; k++) {
-		// left 
-		if(i-k >= 0 && chess[i-k][j] == BLANK) {		
-			var score = calScore(i-k, j, type);
-			if(bp[2] < score) {
-				bp[0] = i-k;
-				bp[1] = j;
-				bp[2] = score;
-			}
+	
+	// left top， area 5 box
+	var ti = (i-5) < 0 ? 0 : i-5;   // top left i
+	var tj = (j-5) < 0 ? 0 : j-5;   // top left j
+	var bi = (i + 5) >= N ? N : i+5;
+	var bj = (j + 5) >= N ? N : j+5
+	
+	for(var m = ti; m < bi; m++) {
+		for(n = tj; n < bj; n++) {
+			if(chess[m][n] == BLANK) {
+				var score = calScore(m, n, type);
+					if(bp[2] < score) {
+					bp[0] = m;
+					bp[1] = n;
+					bp[2] = score;
+				}
+			}			
 		}
-		// right 
-		if(i+k < N && chess[i+k][j] == BLANK) {
-			var score = calScore(i+k, j, type);
-			if(bp[2] < score) {
-				bp[0] = i+k;
-				bp[1] = j;
-				bp[2] = score;
-			}
-		}
-		// up 
-		if(j-k >= 0 && chess[i][j-k] == BLANK) {
-			var score = calScore(i, j-k, type);
-			if(bp[2] < score) {
-				bp[0] = i;
-				bp[1] = j-k;
-				bp[2] = score;
-			}
-		}	
-		// down 
-		if(j+k < N && chess[i][j+k] == BLANK) {
-			var score = calScore(i, j+k, type);
-			if(bp[2] < score) {
-				bp[0] = i;
-				bp[1] = j+k;
-				bp[2] = score;
-			}
-		}
-		// left up  i- j-
-		if(i-k >= 0 && j-k >= 0 && chess[i-k][j-k] == BLANK) {
-			var score = calScore(i-k, j-k, type);
-			if(bp[2] < score) {
-				bp[0] = i-k;
-				bp[1] = j-k;
-				bp[2] = score;
-			}
-		}		
-		// right up i+ j-
-		if(i+k < N && j-k >= 0 && chess[i+k][j-k] == BLANK) {
-			var score = calScore(i+k, j-k, type);
-			if(bp[2] < score) {
-				bp[0] = i+k;
-				bp[1] = j-k;
-				bp[2] = score;
-			}
-		}
-		// left bottom i- j+
-		if(i-k >= 0 && j+k < N && chess[i-k][j+k] == BLANK) {
-			var score = calScore(i-k, j+k, type);
-			if(bp[2] < score) {
-				bp[0] = i-k;
-				bp[1] = j+k;
-				bp[2] = score;
-			}
-		}	
-		// right bottom i+ j+
-		if(i+k < N && j+k < N && chess[i+k][j+k] == BLANK) {
-			var score = calScore(i+k, j+k, type);
-			if(bp[2] < score) {
-				bp[0] = i+k;
-				bp[1] = j+k;
-				bp[2] = score;
-			}
-		}			
 	}
+	
 	return bp;
 }
-
-
 
 
 function calScore(i, j, type) {
