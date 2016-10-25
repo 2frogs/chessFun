@@ -11,7 +11,7 @@ var WScoreTable = new Array(7, 15, 400, 1800,  100000, 35, 800, 15000, 800000,  
 var BLANK = 0;
 var BLACK = 1;
 var WHITE = 2;
-var MAX_DEPTH = 4; 
+var MAX_DEPTH = 3; 
 var CUR_TYPE = BLACK;
 
 var TMP_COUNT = 0;
@@ -92,6 +92,9 @@ TMP_COUNT++;
 	}
 	
 	var bpp = getPoints(i, j, type);
+	if(bpp[0][0] == -1) {
+		return bpp[0];
+	}
 //	type = (type == BLACK ? WHITE : BLACK);
 	
 	var point = new Array(-1, -1, -1);

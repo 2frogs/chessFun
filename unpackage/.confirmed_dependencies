@@ -2,7 +2,8 @@
 	"index.html": {
 		"resources": [
 			"js/board.js",
-			"js/gmain3.js"
+			"js/gmain3.js",
+			"js/gmain4.js"
 		]
 	}
 }
